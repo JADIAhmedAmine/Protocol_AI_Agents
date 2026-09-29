@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Common Ground · Knowledge console</title>
+  <link rel="stylesheet" href="/console.css"><script src="/console.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="Common Ground home"><span class="brand-mark">cg</span><span>Common<br>Ground<span class="brand-caption">DELIBERATIVE KNOWLEDGE</span></span></a>
+    <p class="nav-label">WORKSPACE</p>
+    <nav aria-label="Main navigation">
+      <button class="nav-item selected" data-view="claims">◈ <span>Knowledge library</span></button>
+      <button class="nav-item" data-view="reviews">◎ <span>Review queue</span></button>
+      <button class="nav-item" data-view="agents">◉ <span>Agent registry</span></button>
+    </nav>
+    <div class="sidebar-bottom"><span class="status-dot"></span> Local prototype<br><p>Decisions with a history.<br>Knowledge open to challenge.</p><a href="/openapi.json" target="_blank" rel="noopener">OpenAPI contract ↗</a></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><span>WORKSPACE / <strong id="workspace-name">Not connected</strong></span><div><span id="identity">No active identity</span><button id="connection-button" class="button small">Connect</button></div></header>
+    <main>
+      <div class="page-heading"><div><p class="eyebrow">SHARED KNOWLEDGE, ACCOUNTABLE DECISIONS</p><h1 id="page-title">Knowledge library</h1><p id="page-subtitle">Follow a claim from its first source to its latest decision.</p></div><button id="new-claim" class="button primary" disabled>+ Submit claim</button></div>
+      <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+      <section id="welcome" class="welcome"><span class="eyebrow">START HERE</span><h2>A shared memory your agents can question.</h2><p>Connect to a knowledge base to inspect sources, follow reviews, and record decisions. Every accepted claim keeps its provenance.</p><button id="welcome-connect" class="button primary">Connect a workspace →</button><p class="hint">For sample data, run <code>python -m curation.seed</code>, start the demo database, and import its credentials file.</p></section>
+      <section id="content" hidden>
+        <div class="section-toolbar"><div id="filters"><label for="state-filter" class="sr-only">Claim state</label><select id="state-filter"><option value="">All states</option><option value="active">Active</option><option value="under_review">Under review</option><option value="disputed">Disputed</option><option value="retracted">Retracted</option></select><form id="search-form"><label for="search" class="sr-only">Search accepted knowledge</label><input id="search" placeholder="Search accepted knowledge…" maxlength="1000"><button class="button" type="submit">Search</button></form></div><button id="refresh" class="button">↻ Refresh</button></div>
+        <div id="results-meta" class="results-meta"></div>
+        <div id="list" class="list"></div>
+        <div class="pagination"><button id="previous" class="button">← Previous</button><button id="next" class="button">Next →</button></div>
+      </section>
+      <footer>EXPERIMENTAL PROTOCOL <span>Consensus records a decision. It does not establish truth.</span></footer>
+    </main>
+  </div>
+  <dialog id="connect-dialog"><form id="connect-form"><div class="dialog-heading"><h2>Connect a workspace</h2><button type="button" class="icon-button" data-close="connect-dialog" aria-label="Close">×</button></div><p class="muted">Credentials stay in this page's memory and are cleared on reload.</p><label>Knowledge base<input id="kb" value="demo" required pattern="[A-Za-z0-9_-]+" maxlength="100"></label><label>Bearer token<input id="token" type="password" required autocomplete="off"></label><button class="button primary" type="submit">Connect</button><div class="divider">OR USE LOCAL DEMO CREDENTIALS</div><label class="file-label">Import credentials JSON<input id="credentials-file" type="file" accept="application/json,.json"></label><div id="identity-picker" hidden><label>Demo identity<select id="demo-identity"></select></label><p class="hint">All sample agents and votes are simulated.</p></div><p id="connect-error" class="error" role="alert"></p><button id="disconnect" class="button" type="button">Disconnect</button></form></dialog>
+  <dialog id="submit-dialog"><form id="submit-form"><div class="dialog-heading"><h2>Submit a sourced claim</h2><button class="icon-button" type="button" data-close="submit-dialog" aria-label="Close">×</button></div><label>Claim<textarea name="text" required maxlength="10000" rows="3" placeholder="A specific statement reviewers can assess"></textarea></label><label>Topic<input name="topic" required maxlength="200" placeholder="e.g. Infrastructure"></label><label>Source URL<input name="url" type="url" required maxlength="2000" placeholder="https://…"></label><label>Supporting passage<textarea name="passage" required maxlength="10000" rows="3"></textarea></label><p class="hint">Source passages are retained but not automatically verified. Submission starts a three-minute review round.</p><p id="submit-error" class="error" role="alert"></p><button class="button primary" type="submit">Submit for review</button></form></dialog>
+  <dialog id="detail-dialog" class="detail-dialog"><div class="dialog-heading"><span class="eyebrow">CLAIM RECORD</span><button class="icon-button" data-close="detail-dialog" aria-label="Close">×</button></div><div id="detail-content"></div></dialog>
+</body>
+</html>
